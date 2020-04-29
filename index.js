@@ -207,13 +207,13 @@ const sqlite = require('sqlite3').verbose();
 
                         }
                         if(message.content.startsWith(`${prefix}say`)) {
-                            if(message.member.roles.cache.find(r => r.name === "Donations")) {
                             message.delete()
+                            if(message.member.roles.cache.find(r => r.name === "Donations")) {
                             if(!message.member.hasPermission([`MANAGE_MESSAGES`])) return message.channel.send("You can not use this!")
                             const args = message.content.slice(prefix.lenght).trim().split(/ +/g);
                             let saycommand = args.slice(1).join(" ")
                             message.channel.send(saycommand)
-                                return;
+                            return;
                             } else {
                                 message.channel.send('nein')
                             }
