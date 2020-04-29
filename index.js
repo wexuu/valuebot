@@ -65,7 +65,6 @@ const sqlite = require('sqlite3').verbose();
         })
                     } else {
                         message.channel.send('no permsLLL');
-                        message.delete(5000)
                     }
             }
         
@@ -81,9 +80,6 @@ const sqlite = require('sqlite3').verbose();
                             if(!userid) {
                                 message.channel.send('Please mention somebody!');
                             } else {
-                                if(row === undefined  || '0') {
-                                        message.channel.send(`There's nothing to remove!`)
-                                  } else {
                                       let tax2 = row.donos - Number(valuetoremove)
                                       db.run(`UPDATE donations SET donos = ? WHERE userid = ?`, [tax2, userid])
                                       const topembed = new Discord.MessageEmbed()
@@ -98,22 +94,21 @@ const sqlite = require('sqlite3').verbose();
                                     .setTimestamp()
                                     .setFooter('nigels is gay')
                                         message.channel.send(topembed)
-                                    }
+                                    
                                 }
                                 })
                                 
                                 
                                 } else {
                                     message.channel.send('stop trying')
-                                    message.delete(5000)
                                 }
+                    
                             }
                             if(message.content.startsWith(`${prefix}top`)) {
                                 message.delete()
-                                if(message.member.roles.cache.find(r => r.name === "Donations")) {
+                                if(message.member.roles.cache.find(r => r.name === "Walls")) {
                                     let splitMessage = message.content.split(" ");
                                     btoppage = splitMessage[1];
-                                    console.log(btoppage)
                                     if(btoppage === undefined) {
                                         var description = ""
                                     let all = `SELECT userid , donos FROM donations ORDER BY donos DESC LIMIT 20;`
@@ -123,6 +118,7 @@ const sqlite = require('sqlite3').verbose();
                                         .setColor('#FF760B')
                                         .setTitle(message.guild.name + "'s TOP Donators!")
                                         .setTimestamp()  
+                                        .setFooter('Page 1 of 2')
                                         let i = 0;
                                             row.forEach(function (row) {
                                                 i++;
@@ -143,7 +139,8 @@ const sqlite = require('sqlite3').verbose();
                                         const topembed = new Discord.MessageEmbed()
                                         .setColor('#FF760B')
                                         .setTitle(message.guild.name + "'s TOP Donators!")
-                                        .setTimestamp()  
+                                        .setTimestamp()
+                                        .setFooter('Page 2 of 2')  
                                         let i = 0;
                                             row.forEach(function (row) {
                                                 i++;
@@ -161,7 +158,6 @@ const sqlite = require('sqlite3').verbose();
                                 }
                                 } else {
                                     message.channel.send('not working.!.')
-                                    message.delete(5000)
                                 }
                             }
                             if(message.content.startsWith(`${prefix}purge`)){
@@ -182,7 +178,6 @@ const sqlite = require('sqlite3').verbose();
                             
                                 } else {
                                 message.channel.send('no perms')
-                                message.delete(5000)
                             } 
                         }
                         if(message.content.startsWith(`${prefix}ban`)) {
