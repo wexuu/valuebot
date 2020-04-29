@@ -213,6 +213,7 @@ const sqlite = require('sqlite3').verbose();
                             const args = message.content.slice(prefix.lenght).trim().split(/ +/g);
                             let saycommand = args.slice(1).join(" ")
                             message.channel.send(saycommand)
+                                return;
                             } else {
                                 message.channel.send('nein')
                             }
