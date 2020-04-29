@@ -227,4 +227,4 @@ const sqlite = require('sqlite3').verbose();
                                 })//message handler
                                                            
     
-    client.login(token);
+    client.login(process.env.BOT_TOKEN);
