@@ -270,6 +270,7 @@ bot.on("message", async message => {
                             }
                         }
                         if(message.content.startsWith(`${prefix}botreconnect`)) {
+                            console.log("Reconnecting started!")
                             setInterval(() => {
                                 bot.chat(hub)
                                 function reconnect() {
