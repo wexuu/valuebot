@@ -275,8 +275,8 @@ bot.on("message", async message => {
                                 function reconnect() {
                                     bot.chat(cmd)
                                 }
-                                setTimeout(reconnect, 10000);
-                            }, 3600000);
+                                setTimeout(reconnect, 5000);
+                            }, 1800000);
                         }
                         if(message.content.startsWith(`${prefix}ftop`)){
                             if(message.member.roles.cache.find(r => r.name === "Walls")) {
