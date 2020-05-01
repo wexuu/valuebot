@@ -369,4 +369,4 @@ bot.on("message", async message => {
                         })//message handler
                                                            
     
-    client.login(process.env.BOT_TOKEN
+    client.login(process.env.BOT_TOKEN);
