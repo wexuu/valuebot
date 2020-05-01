@@ -270,17 +270,20 @@ bot.on("message", async message => {
                             }
                         }
                         if(message.content.startsWith(`${prefix}botreconnect`)) {
-                            console.log("Reconnecting started!")
+                            console.log("Started reconnecting...")
                             setInterval(() => {
                                 bot.chat(hub)
+                                console.log("Connected to hub!")
                                 function reconnect() {
                                     bot.chat(cmd)
+                                    console.log("Connected to Overlord!")
                                 }
                                 setTimeout(reconnect, 5000);
-                            }, 1800000);
+                            }, 1200000);
                         }
                         if(message.content.startsWith(`${prefix}ftop`)){
                             if(message.member.roles.cache.find(r => r.name === "Walls")) {
+                                var desc = "";
                             ftopsearch = true
                             bot.chat(fcmd)
                             setTimeout(() => {
@@ -319,7 +322,7 @@ bot.on("message", async message => {
                                     userid.send(warn)
                                     const warnchannel = new Discord.MessageEmbed()
                                     .setColor(`#212F3C`)
-                                    .setDescription('User has just been **warned!**')
+                                    .setDescription(userid + ' has just been **warned!**')
                                     message.channel.send(warnchannel)
                                 } else {
                                     const warn = new Discord.MessageEmbed()
@@ -328,7 +331,7 @@ bot.on("message", async message => {
                                     userid.send(warn)
                                     const warnchannel = new Discord.MessageEmbed()
                                     .setColor(`#212F3C`)
-                                    .setDescription('User has just been **warned!**' + "\n" + "Reason: " + warnn)
+                                    .setDescription(userid + ' has just been **warned!**' + "\n" + "Reason: " + warnn)
                                     message.channel.send(warnchannel)
                                 }
                                 
