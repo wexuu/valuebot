@@ -269,8 +269,30 @@ bot.on("message", async message => {
                                 message.channel.send('nein')
                             }
                         }
+                        if(message.content.startsWith(`${prefix}reconnect`)) {
+                            message.delete()
+                            if(message.member.roles.cache.find(r => r.name === "Donations")) {
+                        message.channel.send("Bot is reconnecting. Wait 1 minute...")
+                            bot.chat(hub)
+                            console.log("Force connecting to hub!")
+                           function reconnect() {
+                                    bot.chat(cmd)
+                                    console.log("Force connected to Overlord!")
+                                }
+                                setTimeout(reconnect, 5000);
+                            function botava() {
+                             message.channel.send("Bot has successfully reconnected!")   
+                            }
+                            setTimeout(botava, 60000);
+                            } else {
+                             message.channel.send("nonono that's illegal")   
+                            }
+                        }
                         if(message.content.startsWith(`${prefix}botreconnect`)) {
+                            message.delete()
+                            if(message.member.roles.cache.find(r => r.name === "Donations")) {
                             console.log("Started reconnecting...")
+                            message.channel.send("Reconnecting started")
                             setInterval(() => {
                                 bot.chat(hub)
                                 console.log("Connected to hub!")
@@ -280,6 +302,9 @@ bot.on("message", async message => {
                                 }
                                 setTimeout(reconnect, 5000);
                             }, 1200000);
+                        } else {
+                            message.channel.send("That's illegal")
+                        }
                         }
                         if(message.content.startsWith(`${prefix}ftop`)){
                             if(message.member.roles.cache.find(r => r.name === "Walls")) {
@@ -344,4 +369,4 @@ bot.on("message", async message => {
                         })//message handler
                                                            
     
-    client.login(process.env.BOT_TOKEN);
+    client.login(process.env.BOT_TOKEN
