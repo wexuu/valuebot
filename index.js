@@ -2,6 +2,57 @@ const Discord = require('discord.js');
 const { prefix, token } = require('./config.json');
 const client = new Discord.Client();
 const sqlite = require('sqlite3').verbose();
+const mineflayer = require("mineflayer");
+
+var currentdate = new Date(); 
+var datetime = " " + currentdate.getDate() + "/"
+    + (currentdate.getMonth()+1)  + "/" 
+    + currentdate.getFullYear() + " "  
+    + currentdate.getHours() + ":"  
+    + currentdate.getMinutes();
+
+let ftopsearch = false;
+let ftopvalue = [];
+let ftopfac = [];
+let pos = 1;
+
+const error = new Discord.MessageEmbed()
+    .setDescription(`:x: Error :x:`)
+    .setColor(`#F23612`)
+
+const config = require("./config.json");
+const username = config.username;
+const password = config.password;
+const server = config.server;
+const version = config.version;
+const chan = config.ftopChannel;
+const cmd = config.joincommand
+const fcmd = config.ftopcommand
+const enabled = config.autoftop
+const hub = "/hub"
+
+const bot = mineflayer.createBot({
+    version: version,
+    host: server,
+    username: username,
+    password: password
+});
+bot.on("login", async () => {
+    console.log(`- [ Bot (${bot.username}) is now online on ${server} ]`)
+    console.log("────────────────────────────────────────────────────────────")
+    bot.chat(cmd)
+})
+bot.on("message", async message => {
+    if (ftopsearch == true) {
+        let factionTop = `${message}`.match(/\$([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(.[0-9][0-9])?/g)
+        let factionName = `${message}`.split(" ")[3];
+        if (factionTop == null) return
+        if (factionName == null) return
+        ftopvalue.push(factionTop[0])
+        ftopfac.push(`**${pos}.  ** ${factionName}`)
+        pos = pos + 1
+    }
+})
 
     client.once('ready', () => {
         console.log('Ready!');
@@ -218,9 +269,75 @@ const sqlite = require('sqlite3').verbose();
                                 message.channel.send('nein')
                             }
                         }
-                                                             
+                        if(message.content.startsWith(`${prefix}botreconnect`)) {
+                            setInterval(() => {
+                                bot.chat(hub)
+                                function reconnect() {
+                                    bot.chat(cmd)
+                                }
+                                setTimeout(reconnect, 10000);
+                            }, 3600000);
+                        }
+                        if(message.content.startsWith(`${prefix}ftop`)){
+                            if(message.member.roles.cache.find(r => r.name === "Walls")) {
+                            ftopsearch = true
+                            bot.chat(fcmd)
+                            setTimeout(() => {
+                                ftopsearch = false
+                                if (ftopvalue == "" || ftopfac == "") return message.channel.send(error)
+                                const embed = new Discord.MessageEmbed()
+                                    .setColor(`#F13613`)
+                                    .setTitle(`FTOP - ${datetime} CET`)
+                                    .setFooter(`Server - ${server}`)
+                                    .addField("Faction", `${ftopfac.join("\n")}`, true)
+                                    .addField("Value", `${ftopvalue.join("\n")}`, true)
+                                message.channel.send(embed)
+                                ftopvalue = []
+                                ftopfac = []
+                                pos = 1
+                            }, 750);
+                        } else {
+                            message.channel.send('no')
+                            return;
+                        }
+                    }
+                        if(message.content.startsWith(`${prefix}warn`)) {
+                            message.delete()
+                            if(message.member.roles.cache.find(r => r.name === "Donations")) {
+                            userid = message.mentions.members.first()
+                            const argss = message.content.slice(prefix.lenght).trim().split(/ +/g);
+                            let warnn = argss.slice(2).join(" ")
+                                if(!userid) {
+                                    message.channel.send('Please mention a user! :saxophone:')
+                                    return;
+                                } 
+                                if(!warnn){
+                                    const warn = new Discord.MessageEmbed()
+                                    .setColor("#0000CC")
+                                    .setDescription('You have been **warned** on ' + message.guild.name + "!")
+                                    userid.send(warn)
+                                    const warnchannel = new Discord.MessageEmbed()
+                                    .setColor(`#212F3C`)
+                                    .setDescription('User has just been **warned!**')
+                                    message.channel.send(warnchannel)
+                                } else {
+                                    const warn = new Discord.MessageEmbed()
+                                    .setColor("#0000CC")
+                                    .setDescription('You have been **warned** on ' + message.guild.name + "!" + "\n" + "Reason: " + warnn)
+                                    userid.send(warn)
+                                    const warnchannel = new Discord.MessageEmbed()
+                                    .setColor(`#212F3C`)
+                                    .setDescription('User has just been **warned!**' + "\n" + "Reason: " + warnn)
+                                    message.channel.send(warnchannel)
+                                }
                                 
-                                })//message handler
+                            } else {
+                                message.channel.send("doesn't work")
+                            }
+                        }
+                            
+                        
+                        })//message handler
                                                            
     
     client.login(process.env.BOT_TOKEN);
