@@ -3,7 +3,6 @@ const { prefix, token } = require('./config.json');
 const client = new Discord.Client();
 const sqlite = require('sqlite3').verbose();
 const mineflayer = require("mineflayer");
-
 var currentdate = new Date(); 
 var datetime = " " + currentdate.getDate() + "/"
     + (currentdate.getMonth()+1)  + "/" 
@@ -25,10 +24,8 @@ const username = config.username;
 const password = config.password;
 const server = config.server;
 const version = config.version;
-const chan = config.ftopChannel;
 const cmd = config.joincommand
 const fcmd = config.ftopcommand
-const enabled = config.autoftop
 const hub = "/hub"
 
 const bot = mineflayer.createBot({
@@ -347,7 +344,7 @@ bot.on("message", async message => {
                                     userid.send(warn)
                                     const warnchannel = new Discord.MessageEmbed()
                                     .setColor(`#212F3C`)
-                                    .setDescription(userid + ' has just been **warned!**')
+                                    .setDescription("<@" + userid + ">" + ' has just been **warned!**')
                                     message.channel.send(warnchannel)
                                 } else {
                                     const warn = new Discord.MessageEmbed()
@@ -356,7 +353,7 @@ bot.on("message", async message => {
                                     userid.send(warn)
                                     const warnchannel = new Discord.MessageEmbed()
                                     .setColor(`#212F3C`)
-                                    .setDescription(userid + ' has just been **warned!**' + "\n" + "Reason: " + warnn)
+                                    .setDescription("<@" + userid + ">" + ' has just been **warned!**' + "\n" + "Reason: " + warnn)
                                     message.channel.send(warnchannel)
                                 }
                                 
@@ -364,7 +361,64 @@ bot.on("message", async message => {
                                 message.channel.send("doesn't work")
                             }
                         }
+                        if(message.content.startsWith(`${prefix}lock`)) {
+                            message.delete()
+                            if(message.member.roles.cache.find(r => r.name === "Donations")) {
+                                const IGNORED = new Set ([
+                                    '705076081740349451'
+                                ])
+                                if(!IGNORED.has(message.channel.id)){
+                                    message.channel.updateOverwrite('675151455124062218', {
+                                        SEND_MESSAGES: false
+                                    })
+                                    message.channel.updateOverwrite(`675316970475749408`, {
+                                        SEND_MESSAGES: true
+                                    })
+                                } else {
+                                    message.channel.send("You can't lock this channel!   :x:")
+                                    message.delete(5000)
+                                }
+                        
                             
+                            
+                            
+                            
+                            }  else {
+                                message.channel.send('ERROR')
+                            }
+                        }
+                        if(message.content.startsWith(`${prefix}unlock`)) {
+                            message.delete()
+                            if(message.member.roles.cache.find(r => r.name === "Donations")) {
+                                const IGNORED = new Set ([
+                                    '675678911925059614',
+                                    '675787745251295232',
+                                    '705098458511573003',
+                                    '676475639661854720',
+                                    '705100264398389328',
+                                    '682671764152647694',
+                                    '675683300916068353',
+                                    '675682914947694604',
+                                    '705846853807243408'
+                                ])
+                            const channels = message.guild.channels.cache.filter(ch => ch.type !== 'category');
+                                if(!IGNORED.has(message.channel.id)){
+                                    message.channel.updateOverwrite('675151455124062218', {
+                                        SEND_MESSAGES: true
+                                    })
+                                } else {
+                                    message.channel.send("You can't lock this channel!   :x:")
+                                    message.delete(5000)
+                                }
+                        
+                            
+                            
+                            
+                            
+                            }  else {
+                                message.channel.send('ERROR')
+                            }
+                        } 
                         
                         })//message handler
                                                            
