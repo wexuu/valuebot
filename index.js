@@ -37,7 +37,6 @@ const bot = mineflayer.createBot({
 bot.on("login", async () => {
     console.log(`- [ Bot (${bot.username}) is now online on ${server} ]`)
     console.log("────────────────────────────────────────────────────────────")
-    bot.chat(cmd)
 })
 bot.on("message", async message => {
     if (ftopsearch == true) {
@@ -50,6 +49,7 @@ bot.on("message", async message => {
         pos = pos + 1
     }
 })
+
 
     client.once('ready', () => {
         console.log('Ready!');
@@ -269,7 +269,7 @@ bot.on("message", async message => {
                         if(message.content.startsWith(`${prefix}reconnect`)) {
                             message.delete()
                             if(message.member.roles.cache.find(r => r.name === "Donations")) {
-                        message.channel.send("Bot is reconnecting. Wait 1 minute...")
+                        message.channel.send("Bot is reconnecting. Wait 30seconds...")
                             bot.chat(hub)
                             console.log("Force connecting to hub!")
                            function reconnect() {
@@ -280,48 +280,36 @@ bot.on("message", async message => {
                             function botava() {
                              message.channel.send("Bot has successfully reconnected!")   
                             }
-                            setTimeout(botava, 60000);
+                            setTimeout(botava, 30000);
                             } else {
                              message.channel.send("nonono that's illegal")   
                             }
                         }
-                        if(message.content.startsWith(`${prefix}botreconnect`)) {
-                            message.delete()
-                            if(message.member.roles.cache.find(r => r.name === "Donations")) {
-                            console.log("Started reconnecting...")
-                            message.channel.send("Reconnecting started")
-                            setInterval(() => {
-                                bot.chat(hub)
-                                console.log("Connected to hub!")
-                                function reconnect() {
-                                    bot.chat(cmd)
-                                    console.log("Connected to Overlord!")
-                                }
-                                setTimeout(reconnect, 5000);
-                            }, 1200000);
-                        } else {
-                            message.channel.send("That's illegal")
-                        }
-                        }
                         if(message.content.startsWith(`${prefix}ftop`)){
                             if(message.member.roles.cache.find(r => r.name === "Walls")) {
+                                message.channel.send("Wait 15 seconds...")
+                                bot.chat(cmd)
+                                function abc(){
+                                    ftopsearch = true
+                                    bot.chat(fcmd)
+                                    setTimeout(() => {
+                                        ftopsearch = false
+                                        if (ftopvalue == "" || ftopfac == "") return message.channel.send(error)
+                                        const embed = new Discord.MessageEmbed()
+                                            .setColor(`#F13613`)
+                                            .setTitle(`FTOP - ${datetime} CET`)
+                                            .setFooter(`Server - ${server}`)
+                                            .addField("Faction", `${ftopfac.join("\n")}`, true)
+                                            .addField("Value", `${ftopvalue.join("\n")}`, true)
+                                        message.channel.send(embed)
+                                        ftopvalue = []
+                                        ftopfac = []
+                                        pos = 1
+                                    }, 750);
+                                }
+                                setTimeout(abc, 10000)
                                 var desc = "";
-                            ftopsearch = true
-                            bot.chat(fcmd)
-                            setTimeout(() => {
-                                ftopsearch = false
-                                if (ftopvalue == "" || ftopfac == "") return message.channel.send(error)
-                                const embed = new Discord.MessageEmbed()
-                                    .setColor(`#F13613`)
-                                    .setTitle(`FTOP - ${datetime} CET`)
-                                    .setFooter(`Server - ${server}`)
-                                    .addField("Faction", `${ftopfac.join("\n")}`, true)
-                                    .addField("Value", `${ftopvalue.join("\n")}`, true)
-                                message.channel.send(embed)
-                                ftopvalue = []
-                                ftopfac = []
-                                pos = 1
-                            }, 750);
+                            
                         } else {
                             message.channel.send('no')
                             return;
@@ -419,6 +407,8 @@ bot.on("message", async message => {
                                 message.channel.send('ERROR')
                             }
                         } 
+                        if(message.content.startsWith(`${prefix}connect`)){
+                        }
                         
                         })//message handler
                                                            
