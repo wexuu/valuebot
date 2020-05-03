@@ -297,7 +297,7 @@ bot.on("message", async message => {
                                         if (ftopvalue == "" || ftopfac == "") return message.channel.send(error)
                                         const embed = new Discord.MessageEmbed()
                                             .setColor(`#F13613`)
-                                            .setTitle(`FTOP - ${datetime} CET`)
+                                            .setTitle(`FTOP - ${datetime} GMT`)
                                             .setFooter(`Server - ${server}`)
                                             .addField("Faction", `${ftopfac.join("\n")}`, true)
                                             .addField("Value", `${ftopvalue.join("\n")}`, true)
