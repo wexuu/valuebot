@@ -302,6 +302,7 @@ bot.on("message", async message => {
                                             .addField("Faction", `${ftopfac.join("\n")}`, true)
                                             .addField("Value", `${ftopvalue.join("\n")}`, true)
                                         message.channel.send(embed)
+                                        bot.chat(hub)
                                         ftopvalue = []
                                         ftopfac = []
                                         pos = 1
