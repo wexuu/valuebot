@@ -213,7 +213,7 @@ bot.on("message", async message => {
                                     let splitMessage = message.content.split(" ");
                                     purgenumber = splitMessage[1];
                                     console.log(purgenumber)
-                                    if(purgenumber > 100) {
+                                    if(purgenumber > 1000) {
                                         message.channel.send("Please supply a number less than **1000**")
                                     } else if(!purgenumber) {
                                         message.channel.send("Please supply a valid amount!")
